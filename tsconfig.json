@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "rootDir": "./app/src",
+        "allowArbitraryExtensions": true,
+        "moduleResolution": "NodeNext",
+        "module": "NodeNext",
+        "esModuleInterop": true,
+        "diagnostics": true,
+        "resolveJsonModule": true,
+        "forceConsistentCasingInFileNames": true,
+        "sourceMap": true,
+    },
+    "include": [
+        "**/*"
+    ],
+    "exclude": [
+        "**/node_modules/*"
+    ]
+}

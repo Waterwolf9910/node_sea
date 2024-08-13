@@ -1,0 +1,6 @@
+{
+    "main": "../out/index.js",
+    "output": "../out/index.blob",
+    "disableExperimentalSEAWarning": true,
+    "assets": {}
+}
