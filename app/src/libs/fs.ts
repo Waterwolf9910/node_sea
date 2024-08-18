@@ -14,7 +14,7 @@ if (sea.isSea()) {
     let fs_struct = {}
 
     //@ts-ignore
-    union.use(vol).use(fs)
+    union.use(vol).use({...fs})
     
     for (let key in sea_config.assets) {
         fs_struct[key] = Buffer.from(sea.getAsset(key))
@@ -24,6 +24,7 @@ if (sea.isSea()) {
     
     vol.fromJSON(fs_struct, path.resolve())
     
+    fsmonkey.patchFs(union)
     // Use to require js files bundled via sea (assets.json) vs webpack (direct require)
     // fsmonkey.patchRequire(union)
     

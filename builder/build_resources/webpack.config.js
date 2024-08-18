@@ -1,13 +1,14 @@
 const path = require("path");
 let webpack = require("webpack");
+let isDev = process.env.NODE_ENV == "development";
 
 /**
  * @type {webpack.Configuration}
  */
 let config = {
-    entry: "./index.ts",
+    entry: ["./libs/fs.ts", "./index.ts"],
     context: path.resolve(__dirname, "../../app/src"),
-    devtool: "inline-source-map",
+    devtool: isDev ? "inline-source-map" : false,
     output: {
         path: path.resolve(__dirname, "../out"),
         filename: "index.js",
@@ -31,14 +32,29 @@ let config = {
             }
         ]
     },
+    plugins: (() =>
+        [
+            ...(isDev ? [
+                new webpack.SourceMapDevToolPlugin({
+                    // sourceRoot: '../../',
+                    moduleFilenameTemplate: '../../app/src/[namespace]/[resourcePath]',
+                    // sourceRoot: path.resolve(__dirname, "../../app/src/[namespace]/[resourcePath]"),
+                })
+            ] : [])
+        ]
+    )(),
+    optimization: {
+        minimize: false, // Causes issues with some libraries
+    },
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
         // extensionAlias: {
         //     ".ts": [".js", ".ts"],
         // },
     },
+    name: 'main',
     target: "node",
-    mode:'development'
+    mode: isDev ? 'development' : 'production'
 }
 
 module.exports = config;

@@ -8,6 +8,6 @@ let sea_config: {
     assets: {
         [key: string]: string
     }
-} = JSON.parse(sea.getAsset("_sea_config_", 'utf-8'))
+} = sea.isSea() ? JSON.parse(sea.getAsset("_sea_config_", 'utf-8')) : {}
 
 export = sea_config
