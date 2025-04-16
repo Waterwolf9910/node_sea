@@ -8,11 +8,11 @@ let isDev = process.env.NODE_ENV == "development";
 let config = {
     entry: ["./libs/fs.ts", "./index.ts"],
     context: path.resolve(__dirname, "../../app/src"),
-    devtool: isDev ? "inline-source-map" : false,
+    devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname, "../out"),
         filename: "index.js",
-        clean: true,
+        clean: false,
     },
     stats: {
         errorDetails: true
@@ -28,7 +28,10 @@ let config = {
             },
             {
                 test: /\.node$/,
-                loader: path.resolve(__dirname, "./native_loader/loader.js")
+                loader: path.resolve(__dirname, "./sea_native_loader/loader.js"),
+                options: {
+                    temp_path: path.resolve(__dirname, '../out/native')
+                }
             }
         ]
     },
@@ -40,7 +43,10 @@ let config = {
                     moduleFilenameTemplate: '../../app/src/[namespace]/[resourcePath]',
                     // sourceRoot: path.resolve(__dirname, "../../app/src/[namespace]/[resourcePath]"),
                 })
-            ] : [])
+            ] : []),
+            new webpack.optimize.LimitChunkCountPlugin({
+                maxChunks: 1
+            })
         ]
     )(),
     optimization: {
