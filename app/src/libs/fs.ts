@@ -17,6 +17,8 @@ if (sea.isSea()) {
     let fs_struct = {}
     let __fs: typeof fs = {
         ...fs,
+
+        existsSync: union.existsSync,
         readFileSync: union.readFileSync,
         statSync: union.statSync,
         lstatSync: union.lstatSync,

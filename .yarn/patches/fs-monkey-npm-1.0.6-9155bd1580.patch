@@ -1,0 +1,14 @@
+diff --git a/lib/patchFs.js b/lib/patchFs.js
+index ed588be9336ab4b0bbbdcb50e2db263a2b184d55..851527da8718e8b2c516aa309c9fd6e8b3a1af96 100644
+--- a/lib/patchFs.js
++++ b/lib/patchFs.js
+@@ -12,6 +12,9 @@ function patchFs(vol) {
+   var fs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : require('fs');
+   var bkp = {};
+   var patch = function patch(key, newValue) {
++    if (!Object.getOwnPropertyDescriptor(fs, key).writable) {
++      return;
++    }
+     bkp[key] = fs[key];
+     fs[key] = newValue;
+   };

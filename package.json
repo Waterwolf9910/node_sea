@@ -13,11 +13,14 @@
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
-        "fs-monkey": "^1.0.6",
+        "fs-monkey": "patch:fs-monkey@npm%3A1.0.6#~/.yarn/patches/fs-monkey-npm-1.0.6-9155bd1580.patch",
         "memfs": "^4.11.1",
         "unionfs": "^4.5.4"
     },
     "scripts": {
         "build": "cd builder; yarn node build.js"
+    },
+    "resolutions": {
+        "fs-monkey@npm:^1.0.0": "patch:fs-monkey@npm%3A1.0.6#~/.yarn/patches/fs-monkey-npm-1.0.6-9155bd1580.patch"
     }
 }

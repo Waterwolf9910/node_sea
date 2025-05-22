@@ -10,7 +10,10 @@ let glob = require("glob")
 let date = new Date()
 let log_datetime = `${date.getDate().toString().padStart(2, '0')}-${date.getMonth().toString().padStart(2, '0')}-${date.getFullYear()}_${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`
 
-fs.rmSync(path.resolve(__dirname, "out"), {recursive: true})
+try {
+    fs.rmSync(path.resolve(__dirname, "out"), {recursive: true})
+} catch {}
+fs.mkdirSync(path.resolve(__dirname, "out"))
 fs.mkdirSync(path.resolve(__dirname, `logs`), { recursive: true })
 fs.mkdirSync(path.resolve(__dirname, 'build'), { recursive: true })
 let log = fs.createWriteStream(path.resolve(__dirname, `logs/out_${log_datetime}.log`), { autoClose: false })
@@ -69,10 +72,12 @@ webpack.on('exit', (code) => {
     log.write("\n\nStarting Blob Creation\n")
 
     let native_assets = {}
-    for (let out_path of fs.readdirSync(path.resolve(__dirname, "out/native"), { withFileTypes: true })) {
-        native_assets[ './_native_/' + out_path.name ] = out_path.parentPath + path.sep + out_path.name
-        if (out_path.isDirectory()) {
-            native_assets[ './_native_/' + out_path.name ] += "/**"
+    if (fs.existsSync(path.resolve(__dirname, "out/native"))) {
+        for (let out_path of fs.readdirSync(path.resolve(__dirname, "out/native"), { withFileTypes: true })) {
+            native_assets[ './_native_/' + out_path.name ] = out_path.parentPath + path.sep + out_path.name
+            if (out_path.isDirectory()) {
+                native_assets[ './_native_/' + out_path.name ] += "/**"
+            }
         }
     }
     add_assets(assets)
